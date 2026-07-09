@@ -1,0 +1,457 @@
+/* =========================================================
+   TOKENS
+   ========================================================= */
+:root{
+  --sky-top:    #FFF4CF;
+  --sky-bottom: #C9E8B8;
+  --grass:      #8FB86B;
+  --grass-dark: #6E9950;
+
+  --pika-yellow:      #F6D02F;
+  --pika-yellow-dark: #E7B316;
+  --pika-yellow-deep: #D69A0A;
+  --pika-black:       #23201D;
+  --pika-brown:       #7A4B2B;
+  --pika-red:         #EE4266;
+  --pika-red-dark:    #C9294E;
+  --cream:            #FFF9EC;
+
+  --ink: #2B2117;
+}
+
+*, *::before, *::after{ box-sizing: border-box; }
+
+html, body{
+  margin:0;
+  height:100%;
+  font-family: 'Nunito', sans-serif;
+  color: var(--ink);
+  overflow-x:hidden;
+}
+
+/* =========================================================
+   BACKDROP
+   ========================================================= */
+.sky{
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(180deg, var(--sky-top) 0%, var(--sky-bottom) 78%, var(--grass) 78%, var(--grass) 100%);
+}
+
+.cloud{
+  position: absolute;
+  background: #ffffff;
+  opacity: 0.75;
+  border-radius: 50%;
+}
+.cloud::before, .cloud::after{
+  content:"";
+  position:absolute;
+  background:#ffffff;
+  border-radius:50%;
+}
+.c1{ width:90px; height:34px; top:8%; left:8%; }
+.c1::before{ width:50px; height:50px; top:-22px; left:10px; }
+.c1::after{ width:36px; height:36px; top:-14px; left:50px; }
+
+.c2{ width:70px; height:28px; top:16%; right:12%; }
+.c2::before{ width:40px; height:40px; top:-18px; left:8px; }
+.c2::after{ width:30px; height:30px; top:-10px; left:38px; }
+
+.c3{ width:56px; height:22px; top:6%; right:30%; opacity:0.55;}
+.c3::before{ width:30px; height:30px; top:-14px; left:6px; }
+.c3::after{ width:24px; height:24px; top:-8px; left:26px; }
+
+/* =========================================================
+   PAGE LAYOUT
+   ========================================================= */
+.scene{
+  min-height: 100vh;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:flex-start;
+  padding: 48px 20px 70px;
+  text-align:center;
+}
+
+.title{
+  font-family:'Baloo 2', cursive;
+  font-size: clamp(2.2rem, 6vw, 3.4rem);
+  font-weight: 800;
+  letter-spacing: 2px;
+  color: var(--pika-yellow-deep);
+  text-shadow:
+    -3px 0 var(--ink),
+    3px 0 var(--ink),
+    0 -3px var(--ink),
+    0 3px var(--ink),
+    5px 5px 0 rgba(0,0,0,0.15);
+  margin: 0 0 4px;
+}
+.spark{
+  display:inline-block;
+  color:#FFE066;
+  -webkit-text-stroke: 2px var(--ink);
+  transform: translateY(-4px) rotate(8deg);
+  margin-left:4px;
+  animation: sparkle 1.8s ease-in-out infinite;
+}
+@keyframes sparkle{
+  0%, 100%{ transform: translateY(-4px) rotate(8deg) scale(1); }
+  50%{ transform: translateY(-8px) rotate(-4deg) scale(1.15); }
+}
+
+.subtitle{
+  font-size: 0.95rem;
+  color: #4d4238;
+  opacity: 0.8;
+  margin: 0 0 30px;
+}
+
+.caption{
+  max-width: 480px;
+  font-size: 0.9rem;
+  color: #4d4238;
+  opacity: 0.75;
+  margin-top: 18px;
+  line-height: 1.5;
+}
+
+/* =========================================================
+   STAGE
+   ========================================================= */
+.stage{
+  position: relative;
+  width: 360px;
+  height: 460px;
+  max-width: 90vw;
+}
+
+.ground{
+  position:absolute;
+  bottom: 18px;
+  left: 50%;
+  width: 240px;
+  height: 46px;
+  background: radial-gradient(ellipse at center, rgba(0,0,0,0.28) 0%, rgba(0,0,0,0) 72%);
+  transform: translateX(-50%);
+  z-index: 1;
+}
+
+.leaf{
+  position:absolute;
+  width: 26px;
+  height: 14px;
+  background: var(--grass-dark);
+  border-radius: 0 100% 0 100%;
+  opacity: 0.7;
+  animation: sway 4s ease-in-out infinite;
+}
+.leaf1{ top: 40px; left: 6px; transform: rotate(20deg); animation-delay:0s;}
+.leaf2{ top: 120px; right: 4px; transform: rotate(-30deg); animation-delay:1.2s;}
+.leaf3{ bottom: 90px; left: 0px; transform: rotate(60deg); animation-delay:2.1s;}
+@keyframes sway{
+  0%, 100%{ transform: rotate(var(--r, 20deg)) translateY(0); }
+  50%{ transform: rotate(calc(var(--r, 20deg) - 10deg)) translateY(-6px); }
+}
+
+/* =========================================================
+   PIKACHU RIG
+   ========================================================= */
+.pikachu{
+  position: absolute;
+  bottom: 40px;
+  left: 50%;
+  width: 260px;
+  height: 400px;
+  transform: translateX(-50%);
+  z-index: 2;
+  animation: breathe 3.2s ease-in-out infinite;
+}
+@keyframes breathe{
+  0%, 100%{ transform: translateX(-50%) translateY(0); }
+  50%{ transform: translateX(-50%) translateY(-6px); }
+}
+
+/* ---------- TAIL ---------- */
+.tail{
+  position: absolute;
+  right: -78px;
+  top: 130px;
+  width: 140px;
+  height: 190px;
+  z-index: 1;
+  transform: rotate(8deg);
+  transform-origin: bottom left;
+}
+.tail-base{
+  position:absolute;
+  left: 4px;
+  bottom: 18px;
+  width: 34px;
+  height: 40px;
+  background: var(--pika-brown);
+  border-radius: 40% 60% 30% 70% / 60% 50% 50% 40%;
+  z-index: 1;
+}
+.bolt{
+  position:absolute;
+  background: var(--pika-yellow);
+  border: 4px solid var(--pika-black);
+  border-radius: 6px;
+}
+.bolt1{
+  width: 46px; height: 78px;
+  left: 8px; bottom: 40px;
+  transform: rotate(24deg);
+  z-index: 2;
+}
+.bolt2{
+  width: 40px; height: 74px;
+  left: 46px; bottom: 88px;
+  transform: rotate(-22deg);
+  z-index: 3;
+  background: var(--pika-yellow-dark);
+}
+.bolt3{
+  width: 34px; height: 64px;
+  left: 62px; bottom: 138px;
+  transform: rotate(20deg);
+  z-index: 4;
+}
+
+/* ---------- BACK STRIPES ---------- */
+.stripe{
+  position:absolute;
+  background: var(--pika-black);
+  border-radius: 40%;
+  z-index: 1;
+}
+.stripe-back-l{ width:16px; height:34px; left:36px; top:150px; transform: rotate(18deg); }
+.stripe-back-r{ width:14px; height:28px; right:70px; top:145px; transform: rotate(-16deg); }
+
+/* ---------- ARMS ---------- */
+.arm{
+  position:absolute;
+  width: 34px;
+  height: 58px;
+  background: var(--pika-yellow);
+  border: 4px solid var(--pika-black);
+  border-radius: 50% 50% 45% 45% / 60% 60% 40% 40%;
+  z-index: 4;
+}
+.arm-left{
+  left: 14px;
+  top: 232px;
+  transform: rotate(18deg);
+}
+.arm-right{
+  right: 14px;
+  top: 232px;
+  transform: rotate(-18deg);
+}
+
+/* ---------- FEET ---------- */
+.foot{
+  position:absolute;
+  width: 58px;
+  height: 34px;
+  background: var(--pika-yellow-dark);
+  border: 4px solid var(--pika-black);
+  border-radius: 45% 45% 40% 40% / 70% 70% 30% 30%;
+  z-index: 2;
+}
+.foot-left{ left: 34px; bottom: 6px; }
+.foot-right{ right: 34px; bottom: 6px; }
+
+/* ---------- BODY ---------- */
+.body{
+  position:absolute;
+  left: 50%;
+  top: 178px;
+  width: 190px;
+  height: 175px;
+  background: var(--pika-yellow);
+  border: 5px solid var(--pika-black);
+  border-radius: 48% 48% 44% 44% / 55% 55% 45% 45%;
+  transform: translateX(-50%);
+  z-index: 3;
+  overflow: hidden;
+}
+.belly-shade{
+  position:absolute;
+  left: 50%;
+  bottom: -20px;
+  width: 130px;
+  height: 90px;
+  background: var(--pika-yellow-dark);
+  border-radius: 50%;
+  transform: translateX(-50%);
+  opacity: 0.55;
+}
+
+/* ---------- EARS ---------- */
+.ear{
+  position: absolute;
+  top: -78px;
+  width: 40px;
+  height: 118px;
+  background: var(--pika-yellow);
+  border: 5px solid var(--pika-black);
+  border-radius: 50% 50% 20% 20% / 60% 60% 15% 15%;
+  z-index: 2;
+}
+.ear-left{
+  left: 26px;
+  transform: rotate(-24deg);
+  transform-origin: bottom center;
+}
+.ear-right{
+  right: 26px;
+  transform: rotate(24deg);
+  transform-origin: bottom center;
+}
+.ear-tip{
+  position:absolute;
+  top: -5px;
+  left: 50%;
+  width: 30px;
+  height: 52px;
+  background: var(--pika-black);
+  border-radius: 50% 50% 20% 20% / 65% 65% 20% 20%;
+  transform: translateX(-50%);
+}
+
+/* ---------- HEAD ---------- */
+.head{
+  position:absolute;
+  left: 50%;
+  top: 40px;
+  width: 220px;
+  height: 190px;
+  background: var(--pika-yellow);
+  border: 5px solid var(--pika-black);
+  border-radius: 50% 50% 46% 46% / 55% 55% 45% 45%;
+  transform: translateX(-50%);
+  z-index: 4;
+}
+
+/* cheeks */
+.cheek{
+  position:absolute;
+  top: 108px;
+  width: 34px;
+  height: 26px;
+  background: var(--pika-red);
+  border-radius: 50%;
+  box-shadow: inset 0 -3px 0 var(--pika-red-dark);
+  animation: pulse 3.2s ease-in-out infinite;
+}
+.cheek-left{ left: 8px; }
+.cheek-right{ right: 8px; }
+@keyframes pulse{
+  0%, 100%{ transform: scale(1); }
+  50%{ transform: scale(1.06); }
+}
+
+/* eyebrows */
+.eyebrow{
+  position:absolute;
+  top: 62px;
+  width: 26px;
+  height: 6px;
+  background: var(--pika-black);
+  border-radius: 4px;
+}
+.eyebrow-left{ left: 56px; transform: rotate(-6deg); }
+.eyebrow-right{ right: 56px; transform: rotate(6deg); }
+
+/* eyes */
+.eye{
+  position:absolute;
+  top: 76px;
+  width: 26px;
+  height: 34px;
+  background: var(--pika-black);
+  border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+  animation: blink 5s ease-in-out infinite;
+}
+.eye-left{ left: 62px; }
+.eye-right{ right: 62px; }
+.eye-shine{
+  position:absolute;
+  top: 5px;
+  left: 5px;
+  width: 9px;
+  height: 11px;
+  background: #ffffff;
+  border-radius: 50%;
+}
+.eye-shine::after{
+  content:"";
+  position:absolute;
+  bottom:-8px;
+  right:-3px;
+  width:5px;
+  height:5px;
+  background:#ffffff;
+  border-radius:50%;
+  opacity:0.8;
+}
+@keyframes blink{
+  0%, 92%, 100%{ transform: scaleY(1); }
+  95%{ transform: scaleY(0.1); }
+}
+
+/* nose */
+.nose{
+  position:absolute;
+  top: 118px;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-left: 4px solid transparent;
+  border-right: 4px solid transparent;
+  border-top: 6px solid var(--pika-black);
+  transform: translateX(-50%);
+}
+
+/* mouth */
+.mouth{
+  position:absolute;
+  top: 128px;
+  left: 50%;
+  width: 46px;
+  height: 22px;
+  border-bottom: 4px solid var(--pika-black);
+  border-radius: 0 0 50% 50%;
+  transform: translateX(-50%);
+}
+.mouth::before,
+.mouth::after{
+  content:"";
+  position:absolute;
+  top: 0;
+  width: 20px;
+  height: 14px;
+  border-bottom: 4px solid var(--pika-black);
+  border-radius: 0 0 50% 50%;
+}
+.mouth::before{ left: -18px; }
+.mouth::after{ right: -18px; }
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+@media (max-width: 420px){
+  .stage{ transform: scale(0.85); }
+  .title{ letter-spacing: 1px; }
+}
+
+@media (prefers-reduced-motion: reduce){
+  .pikachu, .cheek, .eye, .spark, .leaf{
+    animation: none !important;
+  }
+}
